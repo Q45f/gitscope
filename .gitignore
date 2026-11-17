@@ -1,0 +1,18 @@
+# Backup files
+*.zip
+# Logs
+logs
+*.log
+
+# Environment variables
+.env
+.env.*
+!.env.example
+
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+
+dist/

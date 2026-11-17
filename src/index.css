@@ -1,0 +1,1544 @@
+
+/* โหลดสไตล์พื้นฐานและ utility ของ Tailwind CSS */
+@import "tailwindcss";
+
+/* =========================
+   GITSCOPE DESIGN SYSTEM
+========================= */
+
+/* ตัวแปรสีและค่าคงที่ของธีมสว่าง (light) — ใช้งานผ่าน var(--ชื่อ) */
+:root {
+  font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", sans-serif;
+
+  color-scheme: light;
+
+  --bg: #F5F7FB;
+  --surface: #FFFFFF;
+  --surface-hover: #F1F5F9;
+  --text: #111827;
+  --text-secondary: #64748B;
+  --border: #E2E8F0;
+  --primary: #2563EB;
+  --primary-hover: #1D4ED8;
+  --primary-soft: #EFF6FF;
+  --success: #16A34A;
+  --radius: 14px;
+}
+
+/* ตัวแปรสีของธีมมืด — ถูกใช้เมื่อ <html> มีคลาส dark (ดู useTheme.js) */
+.dark {
+  color-scheme: dark;
+
+  --bg: #0B1120;
+  --surface: #151F32;
+  --surface-hover: #1E2A40;
+  --text: #F8FAFC;
+  --text-secondary: #94A3B8;
+  --border: #263449;
+  --primary: #3B82F6;
+  --primary-hover: #60A5FA;
+  --primary-soft: #1E3A5F;
+  --success: #22C55E;
+}
+
+/* =========================
+   GLOBAL
+========================= */
+
+/* ให้ padding/border นับรวมในความกว้างขององค์ประกอบ */
+* {
+  box-sizing: border-box;
+}
+
+/* กำหนดความกว้างขั้นต่ำและให้การเลื่อนหน้าเป็นแบบนุ่มนวล */
+html {
+  min-width: 320px;
+  scroll-behavior: smooth;
+}
+
+/* พื้นหลังและสีตัวอักษรหลัก (เปลี่ยนสีอย่างนุ่มนวลเมื่อสลับธีม) */
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+/* ให้ปุ่มและช่องกรอกใช้ฟอนต์เดียวกับหน้าเว็บ */
+button,
+input,
+select {
+  font: inherit;
+}
+
+/* เคอร์เซอร์รูปมือบนปุ่ม */
+button {
+  cursor: pointer;
+}
+
+/* ปุ่มที่ถูกปิดใช้งาน: เคอร์เซอร์เป็นเครื่องหมายห้าม */
+button:disabled {
+  cursor: not-allowed;
+}
+
+/* ลิงก์ใช้สีตามข้อความรอบข้าง และไม่มีขีดเส้นใต้ */
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* รูปและ SVG ไม่ให้กว้างเกินกล่องที่ครอบ */
+img,
+svg {
+  max-width: 100%;
+}
+
+/* กล่องหลักของ React สูงเต็มจอ */
+#root {
+  min-height: 100vh;
+}
+
+/* กล่องเนื้อหาตรงกลาง กว้างสุด 1200px เว้นขอบข้างละ 20px */
+.container {
+  width: min(100% - 40px, 1200px);
+  margin-inline: auto;
+}
+
+/* พื้นผิวมาตรฐานของการ์ด: พื้นหลัง เส้นขอบ และมุมมน */
+.surface {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+/* ข้อความสีรอง (จางกว่าข้อความหลัก) */
+.muted {
+  color: var(--text-secondary);
+}
+
+/* ข้อความเล็กตัวพิมพ์ใหญ่เหนือหัวข้อ */
+.eyebrow {
+  color: var(--primary);
+  font-size: 11px;
+  font-weight: 750;
+  letter-spacing: 1.2px;
+}
+
+/* ปุ่มหลักสีน้ำเงิน */
+.primary-button {
+  border: 0;
+  border-radius: 10px;
+  padding: 11px 16px;
+  background: var(--primary);
+  color: white;
+  font-weight: 600;
+  transition: background 0.2s ease;
+  white-space: nowrap;
+}
+
+.primary-button:hover {
+  background: var(--primary-hover);
+}
+
+.primary-button:disabled {
+  opacity: 0.6;
+}
+
+/* =========================
+   TOPBAR
+========================= */
+
+/* แถบนำทางด้านบน */
+.topbar {
+  height: 72px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+
+/* จัดโลโก้ เมนู และปุ่มด้านขวาให้อยู่แถวเดียวกัน */
+.topbar-inner {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* โลโก้ + ชื่อแอป */
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 20px;
+  font-weight: 750;
+  letter-spacing: -0.5px;
+}
+
+/* กล่องสี่เหลี่ยมมนที่ครอบไอคอนโลโก้ */
+.brand-icon {
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  color: white;
+  background: var(--primary);
+  border-radius: 10px;
+  flex-shrink: 0;
+}
+
+/* เมนูหลักบนจอใหญ่ */
+.desktop-nav {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ลิงก์เมนูแต่ละอัน */
+.nav-link {
+  padding: 9px 14px;
+  border-radius: 9px;
+  color: var(--text-secondary);
+  font-size: 14px;
+  font-weight: 550;
+}
+
+.nav-link:hover {
+  background: var(--surface-hover);
+  color: var(--text);
+}
+
+/* เมนูของหน้าปัจจุบัน (ไฮไลต์) */
+.nav-link.active {
+  background: var(--primary-soft);
+  color: var(--primary);
+}
+
+/* กลุ่มปุ่มด้านขวาของแถบนำทาง */
+.topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* ปุ่มสี่เหลี่ยมมนสำหรับสลับธีมและเมนูมือถือ */
+.theme-toggle,
+/* ปุ่มเมนูมือถือ ซ่อนไว้ก่อน จะแสดงในส่วน MOBILE ด้านล่าง */
+.mobile-menu {
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface);
+  color: var(--text);
+}
+
+.theme-toggle:hover,
+.mobile-menu:hover {
+  background: var(--surface-hover);
+}
+
+.mobile-menu {
+  display: none;
+}
+
+/* =========================
+   DASHBOARD
+========================= */
+
+/* ระยะห่างรอบหน้า Dashboard */
+.dashboard {
+  padding-top: 42px;
+  padding-bottom: 60px;
+}
+
+/* ส่วนต้อนรับบนสุดของ Dashboard */
+.welcome-section {
+  margin-bottom: 32px;
+}
+
+.welcome-section h1 {
+  margin: 12px 0;
+  font-size: clamp(30px, 5vw, 42px);
+  letter-spacing: -1.5px;
+}
+
+.welcome-description {
+  margin: 0;
+  max-width: 550px;
+  line-height: 1.7;
+}
+
+/* ช่องค้นหาในหน้า Dashboard */
+.dashboard-search {
+  max-width: 620px;
+  height: 54px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 24px;
+  padding: 6px 7px 6px 16px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  color: var(--text-secondary);
+}
+
+.dashboard-search input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--text);
+}
+
+.dashboard-search input::placeholder {
+  color: var(--text-secondary);
+}
+
+/* กริดการ์ดสถิติ 4 คอลัมน์ */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+}
+
+/* การ์ดสถิติแต่ละใบ */
+.stat-card {
+  min-width: 0;
+  padding: 20px;
+}
+
+.stat-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 13px;
+}
+
+/* กล่องไอคอนในการ์ดสถิติ */
+.stat-icon {
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  color: var(--primary);
+  background: var(--primary-soft);
+  border-radius: 10px;
+  flex-shrink: 0;
+}
+
+.stat-card h2 {
+  margin: 16px 0 4px;
+  font-size: 28px;
+  letter-spacing: -0.8px;
+}
+
+.stat-card p {
+  margin: 0;
+  font-size: 12px;
+}
+
+/* ระยะห่างระหว่างส่วนต่าง ๆ ใน Dashboard */
+.dashboard-section {
+  margin-top: 38px;
+}
+
+/* หัวข้อของแต่ละส่วน (ชื่อ + คำอธิบาย + ปุ่มด้านขวา) */
+.section-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.section-heading h2 {
+  margin: 0 0 6px;
+  font-size: 20px;
+}
+
+.section-heading p {
+  margin: 0;
+  font-size: 13px;
+}
+
+.section-period {
+  font-size: 13px;
+}
+
+/* กริด 2 คอลัมน์สำหรับการ์ดกราฟ/รายการ */
+.insights-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+/* การ์ดกราฟหรือรายการใน Dashboard */
+.insight-card {
+  min-width: 0;
+  min-height: 260px;
+  padding: 22px;
+}
+
+.insight-card h3 {
+  margin: 0 0 7px;
+  font-size: 15px;
+}
+
+.insight-card > p {
+  margin: 0;
+  font-size: 12px;
+}
+
+/* กล่องแสดงเมื่อไม่มีข้อมูลสำหรับกราฟ */
+.placeholder-chart {
+  min-height: 165px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  color: var(--text-secondary);
+  font-size: 13px;
+}
+
+/* =========================
+   EXPLORE PAGE
+========================= */
+
+/* ระยะห่างรอบหน้า Explore และ Collections */
+.explore-page {
+  padding-top: 42px;
+  padding-bottom: 60px;
+}
+
+/* ส่วนหัวของหน้า Explore/Collections */
+.explore-header {
+  margin-bottom: 26px;
+}
+
+.explore-header h1 {
+  margin: 12px 0;
+  font-size: clamp(28px, 4vw, 36px);
+  letter-spacing: -1px;
+}
+
+.explore-header > p:last-child {
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+/* ช่องค้นหาของหน้า Explore/Collections */
+.explore-search {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+  height: 58px;
+  padding: 6px 7px 6px 16px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  color: var(--text-secondary);
+}
+
+.explore-search input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--text);
+}
+
+.explore-search input::placeholder {
+  color: var(--text-secondary);
+}
+
+.explore-search button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* แถบตัวกรองภาษา เรียงลำดับ และจำนวนผลลัพธ์ */
+.explore-controls {
+  display: flex;
+  align-items: end;
+  gap: 16px;
+  margin: 26px 0 20px;
+  flex-wrap: wrap;
+}
+
+/* กลุ่ม label + dropdown ของตัวกรอง */
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.filter-group label {
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.filter-group select {
+  min-width: 150px;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  outline: none;
+  background: var(--surface);
+  color: var(--text);
+}
+
+/* จำนวนผลลัพธ์ ชิดขวา */
+.result-count {
+  margin-left: auto;
+  padding-bottom: 10px;
+  font-size: 13px;
+}
+
+/* กริดการ์ด repo 2 คอลัมน์ */
+.repository-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+/* การ์ด repo แต่ละใบ (ยกขึ้นเล็กน้อยเมื่อเอาเมาส์ชี้) */
+.repository-card {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  padding: 20px;
+  transition: border-color 0.2s ease, transform 0.2s ease;
+}
+
+.repository-card:hover {
+  border-color: var(--primary);
+  transform: translateY(-2px);
+}
+
+/* ส่วนหัวการ์ด: ชื่อ repo ด้านซ้าย ปุ่มด้านขวา */
+.repo-card-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.repo-card-heading > div:first-child {
+  min-width: 0;
+}
+
+.repo-card-heading h2 {
+  margin: 0;
+  font-size: 16px;
+  overflow-wrap: anywhere;
+}
+
+.repo-card-heading p {
+  margin: 5px 0 0;
+  font-size: 12px;
+}
+
+.repo-card-heading a {
+  color: var(--text-secondary);
+}
+
+.repo-card-heading a:hover {
+  color: var(--primary);
+}
+
+/* คำอธิบาย repo จำกัดไม่เกิน 2 บรรทัด */
+.repo-description {
+  min-height: 48px;
+  margin: 18px 0;
+  color: var(--text-secondary);
+  font-size: 13px;
+  line-height: 1.7;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* ส่วนท้ายการ์ด: สถิติและภาษา (ดันไปติดด้านล่างของการ์ด) */
+.repo-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: auto;
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
+}
+
+/* กลุ่มสถิติ stars/forks */
+.repo-stats {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.repo-stats span {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--text-secondary);
+  font-size: 12px;
+}
+
+/* ชื่อภาษาหลักของ repo */
+.repo-language {
+  color: var(--primary);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* กล่องข้อความกลางหน้า: loading, ไม่พบข้อมูล, error, สถานะเริ่มต้น */
+.explore-message {
+  min-height: 230px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  color: var(--text-secondary);
+  text-align: center;
+  padding: 20px;
+}
+
+.explore-message h3,
+.explore-message p {
+  margin: 0;
+}
+
+.explore-message h3 {
+  color: var(--text);
+  font-size: 17px;
+}
+
+/* สีแดงสำหรับข้อความ error */
+.error-message {
+  color: #DC2626;
+}
+
+/* หมุนไอคอน loading ตลอดเวลา */
+.loading-icon {
+  animation: spin 1s linear infinite;
+}
+
+/* แอนิเมชันหมุนครบ 1 รอบ */
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* =========================
+   REPOSITORY DETAILS
+========================= */
+
+/* ระยะห่างรอบหน้ารายละเอียด repo */
+.details-page {
+  padding-top: 32px;
+  padding-bottom: 60px;
+}
+
+/* ลิงก์ "Back to Explore" */
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 24px;
+  color: var(--text-secondary);
+  font-size: 14px;
+}
+
+.back-link:hover {
+  color: var(--primary);
+}
+
+/* การ์ดส่วนหัวในหน้ารายละเอียด */
+.details-header {
+  padding: 30px;
+  margin-bottom: 20px;
+}
+
+.details-header h1 {
+  margin: 12px 0 4px;
+  font-size: clamp(28px, 4vw, 36px);
+  overflow-wrap: anywhere;
+}
+
+.details-owner {
+  color: var(--text-secondary);
+  font-size: 14px;
+}
+
+.details-description {
+  margin: 20px 0;
+  max-width: 800px;
+  color: var(--text-secondary);
+  line-height: 1.8;
+}
+
+/* ปุ่ม "View on GitHub" (ใช้ร่วมกับ primary-button) */
+.github-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* กริดการ์ดสถิติ 4 ใบในหน้ารายละเอียด */
+.details-stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+/* การ์ดสถิติแต่ละใบในหน้ารายละเอียด */
+.details-stat-card {
+  min-width: 0;
+  padding: 22px;
+}
+
+.details-stat-card > svg {
+  color: var(--primary);
+}
+
+.details-stat-card p {
+  margin: 12px 0 6px;
+  color: var(--text-secondary);
+  font-size: 13px;
+}
+
+.details-stat-card h2 {
+  margin: 0;
+  font-size: 25px;
+}
+
+/* กริด 2 คอลัมน์: ภาษา | ข้อมูลทั่วไป */
+.details-content {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+}
+
+/* แผงเนื้อหาในหน้ารายละเอียด */
+.details-panel {
+  min-width: 0;
+  padding: 24px;
+}
+
+.details-panel h2 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 24px;
+  font-size: 18px;
+}
+
+.details-panel h2 svg {
+  color: var(--primary);
+}
+
+/* รายการภาษา เรียงลงมา */
+.language-list {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+/* ชื่อภาษาและเปอร์เซ็นต์ในแถวเดียวกัน */
+.language-item-heading {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 8px;
+  font-size: 13px;
+}
+
+/* รางของแถบ progress ภาษา */
+.language-track {
+  height: 8px;
+  overflow: hidden;
+  border-radius: 20px;
+  background: var(--border);
+}
+
+/* ส่วนที่เติมสีของแถบ progress (ความกว้างกำหนดจาก JS) */
+.language-fill {
+  height: 100%;
+  border-radius: 20px;
+  background: var(--primary);
+}
+
+/* แถวข้อมูล: ป้ายด้านซ้าย ค่าด้านขวา */
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 13px;
+}
+
+.info-row:last-child {
+  border-bottom: 0;
+}
+
+.info-row span {
+  color: var(--text-secondary);
+}
+
+.info-row strong {
+  text-align: right;
+  overflow-wrap: anywhere;
+}
+
+/* =========================
+   BOOKMARK BUTTON
+========================= */
+
+/* กลุ่มปุ่ม bookmark และลิงก์ GitHub บนการ์ด */
+.repo-card-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+/* ปุ่ม bookmark/ลบบนการ์ด repo */
+.bookmark-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.bookmark-button:hover {
+  color: var(--primary);
+  background: var(--surface-hover);
+}
+
+/* สถานะบันทึกแล้ว: เน้นด้วยสีหลัก */
+.bookmark-button.saved {
+  color: var(--primary);
+  background: var(--surface-hover);
+  border-color: var(--primary);
+}
+
+.bookmark-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.repo-card-actions a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* =========================
+   COLLECTIONS
+========================= */
+
+/* การ์ดสรุปจำนวน repo ที่บันทึกในหน้า Collections */
+.collection-summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 24px;
+  margin-bottom: 24px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  color: var(--primary);
+}
+
+.collection-summary h2 {
+  margin: 8px 0 0;
+  font-size: 30px;
+  color: var(--text);
+}
+
+/* =========================
+   TABLET
+========================= */
+
+/* แท็บเล็ต: ลดกริดสถิติเหลือ 2 คอลัมน์ */
+@media (max-width: 900px) {
+  .stats-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .details-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+/* มือถือ: ซ่อนเมนูเดสก์ท็อป แสดงปุ่มเมนู และเปลี่ยนกริดเป็น 1 คอลัมน์ */
+@media (max-width: 650px) {
+  .container {
+    width: min(100% - 28px, 1200px);
+  }
+
+  .topbar {
+    height: 64px;
+  }
+
+  .desktop-nav {
+    display: none;
+  }
+
+  .mobile-menu {
+    display: grid;
+  }
+
+  .dashboard {
+    padding-top: 28px;
+  }
+
+  .insights-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .stat-card {
+    padding: 15px;
+  }
+
+  .stat-card h2 {
+    font-size: 24px;
+  }
+
+  .dashboard-search .primary-button {
+    padding: 10px 12px;
+  }
+
+  .explore-page {
+    padding-top: 28px;
+  }
+
+  .repository-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .explore-controls {
+    align-items: stretch;
+  }
+
+  .filter-group {
+    flex: 1;
+    min-width: 130px;
+  }
+
+  .filter-group select {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .result-count {
+    width: 100%;
+    margin-left: 0;
+    padding: 0;
+  }
+
+  .details-content {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* =========================
+   SMALL MOBILE
+========================= */
+
+/* มือถือจอเล็ก: ลดขนาดและระยะห่าง */
+@media (max-width: 480px) {
+  .welcome-section h1 {
+    font-size: 30px;
+  }
+
+  .explore-search {
+    gap: 8px;
+    padding-left: 10px;
+  }
+
+  .explore-search button {
+    padding: 10px 12px;
+  }
+
+  .repository-card {
+    padding: 16px;
+  }
+
+  .repo-stats {
+    gap: 10px;
+  }
+
+  .details-header {
+    padding: 20px;
+  }
+
+  .details-stat-card {
+    padding: 16px;
+  }
+
+  .details-stat-card h2 {
+    font-size: 21px;
+  }
+
+  .details-panel {
+    padding: 18px;
+  }
+
+  .collection-summary {
+    padding: 18px;
+  }
+
+  .collection-summary h2 {
+    font-size: 26px;
+  }
+
+  .insight-card {
+    padding: 18px;
+  }
+}
+
+/* =========================
+   DASHBOARD LIVE DATA
+========================= */
+
+/* กล่องสถานะโหลด/error ของ Dashboard */
+.dashboard-status {
+  min-height: 260px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  color: var(--text-secondary);
+  text-align: center;
+  padding: 24px;
+}
+
+.dashboard-status p,
+.dashboard-status h3 {
+  margin: 0;
+}
+
+/* สีแดงสำหรับ error ของ Dashboard */
+.dashboard-error {
+  color: #DC2626;
+}
+
+.dashboard-error p {
+  max-width: 500px;
+  line-height: 1.7;
+}
+
+/* พื้นที่กราฟวงกลม (ต้องกำหนดความสูงให้ ResponsiveContainer) */
+.dashboard-chart {
+  width: 100%;
+  height: 250px;
+  margin-top: 12px;
+}
+
+/* ข้อความหมายเหตุใต้กราฟ */
+.chart-note {
+  margin-top: 8px;
+  font-size: 12px;
+}
+
+/* รายการ repo ยอดนิยม */
+.popular-repository-list {
+  display: flex;
+  flex-direction: column;
+  margin-top: 16px;
+}
+
+/* แถว repo ยอดนิยมแต่ละแถว (คลิกได้) */
+.popular-repository {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 13px 0;
+  border-bottom: 1px solid var(--border);
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.popular-repository:last-child {
+  border-bottom: 0;
+}
+
+.popular-repository:hover strong {
+  color: var(--primary);
+}
+
+/* ชื่อ repo และภาษา (ยืดเต็มพื้นที่ที่เหลือ) */
+.popular-repository-info {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  flex: 1;
+  min-width: 0;
+}
+
+.popular-repository-info strong {
+  font-size: 13px;
+  overflow-wrap: anywhere;
+}
+
+.popular-repository-info span {
+  font-size: 11px;
+}
+
+/* จำนวน stars ของแถว (ไอคอนดาวสีเหลือง) */
+.popular-repository-stars {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--text-secondary);
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.popular-repository-stars svg {
+  color: #EAB308;
+}
+
+/* ไอคอนลูกศรท้ายแถว */
+.popular-repository-arrow {
+  flex-shrink: 0;
+  color: var(--text-secondary);
+}
+
+/* การ์ดที่ครอบกราฟแท่ง */
+.dashboard-bar-card {
+  width: 100%;
+  min-width: 0;
+  padding: 24px 16px;
+  overflow: hidden;
+}
+
+/* ปุ่มลิงก์ "Explore repositories" */
+.dashboard-explore-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 12px;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  background: var(--surface);
+  color: var(--primary);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.dashboard-explore-link:hover {
+  background: var(--surface-hover);
+}
+
+/* มือถือ: ปรับกราฟและแถว repo ยอดนิยมของ Dashboard */
+@media (max-width: 650px) {
+  .dashboard-chart {
+    height: 280px;
+  }
+
+  .dashboard-bar-card {
+    padding: 16px 8px;
+  }
+
+  .popular-repository {
+    gap: 8px;
+  }
+
+  .popular-repository-info strong {
+    font-size: 12px;
+  }
+}
+
+/* =========================
+   AUTHENTICATION PAGES
+   ใช้ตกแต่งหน้า Login และ Register
+========================= */
+
+/* พื้นหลังหลักของหน้า Authentication */
+.auth-page {
+  min-height: calc(100vh - 72px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 20px;
+}
+
+/* กล่อง Login / Register */
+.auth-card {
+  width: 100%;
+  max-width: 440px;
+  padding: 36px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  box-shadow: 0 12px 40px rgba(15, 23, 42, 0.06);
+}
+
+/* โลโก้ GitScope */
+.auth-brand {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 32px;
+  color: var(--text);
+  font-size: 24px;
+  font-weight: 750;
+  text-decoration: none;
+}
+
+.auth-brand svg {
+  color: var(--primary);
+}
+
+/* หัวข้อหน้า Login / Register */
+.auth-heading {
+  text-align: center;
+  margin-bottom: 28px;
+}
+
+.auth-heading h1 {
+  margin: 0 0 10px;
+  color: var(--text);
+  font-size: 26px;
+  font-weight: 750;
+}
+
+.auth-heading p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+/* แบบฟอร์ม Authentication */
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* แต่ละช่องกรอกข้อมูล */
+.auth-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.auth-field label {
+  color: var(--text);
+  font-size: 13px;
+  font-weight: 650;
+}
+
+/* กล่อง Input และ Icon */
+.auth-input-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 14px;
+  min-height: 48px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--bg);
+  color: var(--text-secondary);
+  transition: border-color 0.2s ease,
+              box-shadow 0.2s ease;
+}
+
+.auth-input-wrapper:focus-within {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px var(--primary-soft);
+}
+
+.auth-input-wrapper input {
+  width: 100%;
+  min-width: 0;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: var(--text);
+  font-size: 14px;
+}
+
+.auth-input-wrapper input::placeholder {
+  color: var(--text-secondary);
+  opacity: 0.8;
+}
+
+/* ปุ่ม Login / Register */
+.auth-submit {
+  width: 100%;
+  min-height: 48px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  margin-top: 4px;
+  border-radius: 10px;
+  font-size: 14px;
+}
+
+.auth-submit:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+/* ข้อความแจ้งเตือน */
+.auth-error,
+.auth-success {
+  margin: 0;
+  padding: 12px;
+  border-radius: 9px;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.auth-error {
+  color: #DC2626;
+  background: rgba(220, 38, 38, 0.08);
+}
+
+.auth-success {
+  color: #16A34A;
+  background: rgba(22, 163, 74, 0.08);
+}
+
+/* ลิงก์สลับระหว่าง Login และ Register */
+.auth-switch {
+  margin: 24px 0 0;
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 13px;
+}
+
+.auth-switch a {
+  color: var(--primary);
+  font-weight: 650;
+  text-decoration: none;
+}
+
+.auth-switch a:hover {
+  text-decoration: underline;
+}
+
+/* ปรับขนาดหน้า Authentication สำหรับมือถือ */
+@media (max-width: 480px) {
+  .auth-page {
+    min-height: calc(100vh - 64px);
+    padding: 24px 16px;
+  }
+
+  .auth-card {
+    padding: 26px 20px;
+    border-radius: 14px;
+  }
+
+  .auth-heading h1 {
+    font-size: 23px;
+  }
+}
+
+/* =========================
+   AUTHENTICATION LOADING
+   แสดงระหว่างตรวจสอบสถานะ Login
+========================= */
+
+.auth-loading {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 24px;
+  color: var(--text-secondary);
+  background: var(--bg);
+  font-size: 14px;
+}
+
+/* =========================
+   USER ACCOUNT IN TOPBAR
+   ใช้ตกแต่งข้อมูลบัญชีและปุ่ม Logout
+========================= */
+
+/* ส่วนแสดงบัญชีผู้ใช้ */
+.account-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-secondary);
+  font-size: 13px;
+  padding: 0 10px;
+}
+
+/* ป้องกันอีเมลยาวเกินไป */
+.account-email {
+  max-width: 150px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ปุ่ม Logout */
+.logout-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 9px 12px;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+/* เปลี่ยนสีเมื่อเลื่อนเมาส์ไปบนปุ่ม */
+.logout-button:hover {
+  color: #DC2626;
+  border-color: #DC2626;
+  background: rgba(220, 38, 38, 0.06);
+}
+
+/* ป้องกันการกดซ้ำระหว่างกำลัง Logout */
+.logout-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ปรับขนาดส่วนบัญชีบนหน้าจอเล็ก */
+@media (max-width: 650px) {
+  .account-info {
+    padding: 0 4px;
+  }
+
+  .account-email {
+    display: none;
+  }
+
+  .logout-button {
+    padding: 8px;
+  }
+
+  .logout-button span {
+    display: none;
+  }
+}
+/* =========================
+   SEARCH AUTOCOMPLETE
+   ตกแต่งรายการคำแนะนำใต้ช่องค้นหา
+========================= */
+
+/* กล่องหลักที่ใช้ครอบช่องค้นหาและคำแนะนำ */
+.explore-search-container {
+  position: relative;
+  width: 100%;
+  z-index: 10;
+}
+
+/* กล่องรายการคำแนะนำ */
+.search-suggestions {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  right: 0;
+  padding: 6px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
+  z-index: 20;
+}
+
+/* ปุ่มคำแนะนำแต่ละรายการ */
+.search-suggestion-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 12px 14px;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--text);
+  font-size: 14px;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+/* เปลี่ยนพื้นหลังเมื่อชี้หรือเลือกคำแนะนำ */
+.search-suggestion-item:hover {
+  background: var(--bg);
+}
+
+/* สีไอคอนค้นหา */
+.search-suggestion-item svg {
+  color: var(--text-secondary);
+  flex-shrink: 0;
+}
+
+/* =========================
+   LANGUAGE TOGGLE
+   ปุ่มสำหรับสลับภาษาไทยและอังกฤษ
+========================= */
+
+.language-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 36px;
+  padding: 0 10px;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  background: var(--surface);
+  color: var(--text);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.language-toggle:hover {
+  background: var(--bg);
+  border-color: var(--text-secondary);
+}
+
+.language-toggle svg {
+  flex-shrink: 0;
+}
